@@ -64,6 +64,29 @@ public class ForeController {
         return "fore/home";
     }
 
+/*
+@RequestMapping("foreloginAjax")
+    @ResponseBody
+    public String loginAjax(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session) {
+        name = HtmlUtils.htmlEscape(name);
+        User user = userService.get(name, password);
+        if (user == null)
+            return "fail";
+        session.setAttribute("user", user);
+        return "success";
+    }
+ */
+    @RequestMapping("forecheckName")
+    @ResponseBody
+    public String checkName(Model model, @RequestParam("name") String name){
+        System.out.println("*******************************HEloo");
+        name = HtmlUtils.htmlEscape(name);
+        boolean exist = userService.isExist(name);
+        if (exist) {
+            return "fail";
+        }
+        return "success";
+    }
     /**
      * 注册
      */
@@ -71,7 +94,7 @@ public class ForeController {
     public String register(Model model, User user, String checkCode, HttpSession session) {
         String name = user.getName();
         name = HtmlUtils.htmlEscape(name);
-        boolean exist = userService.isExist(name);
+
 
         String checkcode_server = (String) session.getAttribute("CHECKCODE_SERVER");
         //保证验证码只能使用一次
@@ -83,12 +106,7 @@ public class ForeController {
             model.addAttribute("user", null);
             return "fore/register";
         }
-        if (exist) {
-            String msg = "换一个吧，此用户名已经被使用";
-            model.addAttribute("msg", msg);
-            model.addAttribute("user", null);
-            return "fore/register";
-        }
+
         userService.add(user);
         return "redirect:registerSuccessPage";
     }

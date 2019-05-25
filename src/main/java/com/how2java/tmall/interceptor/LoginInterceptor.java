@@ -46,6 +46,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 "category",
                 "search",
                 "checkCode",
+                "checkName",
         };
         String uri = request.getRequestURI();
         uri = StringUtils.remove(uri, contextPath);

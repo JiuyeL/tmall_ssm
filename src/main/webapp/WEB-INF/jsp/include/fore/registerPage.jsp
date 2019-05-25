@@ -100,13 +100,13 @@
         }
         return flag;
     }
-
     //图片点击事件,刷新验证码
     function changeCheckCode(img) {
         img.src = "checkCode?" + new Date().getTime();
     }
 
     $(function () {
+
         <c:if test="${!empty msg}">
         $("span.errorMessage").html("${msg}");
         $("div.registerErrorMessageDiv").css("visibility", "visible");
@@ -126,10 +126,24 @@
                 return false;
             });
         });
+        $("#name").blur(function () {
+            var name = $("#name").val();
+            $.get(
+                "forecheckName",
+                {name: name},
+                function (result) {
+                   alert("123456789"+result)
+                    if (result == "fail") {
+                        $("span.errorMessage").html("换一个吧，此用户名已经被使用");
+                        $("div.registerErrorMessageDiv").css("visibility", "visible");
+                    }
+                }
+            );
+        });
         //当某个组件失去焦点时，调用对应的方法进行验证
         $("#password").blur(checkPassword);
         $("#repeatpassword").blur(checkPasswordAgain);
-        $("#name").blur(checkName);
+        // $("#name").blur(checkName);
         $("#telephone").blur(checkTel);
         $("#check").blur(checkCode);
     });
@@ -151,7 +165,7 @@
         <table class="registerTable" align="center">
             <tr>
                 <td class="registerTip registerTableLeftTD">设置会员名</td>
-                <td class="registerTableRightTD"><input id="name" name="name" placeholder="会员名一旦设置成功，无法修改"></td>
+                <td class="registerTableRightTD"><input  type="text" id="name" name="name"  placeholder="会员名一旦设置成功，无法修改"></td>
             </tr>
             <tr>
                 <td class="registerTip registerTableLeftTD">手机号</td>

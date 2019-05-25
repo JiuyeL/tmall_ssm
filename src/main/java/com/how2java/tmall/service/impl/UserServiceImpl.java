@@ -57,11 +57,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User get(String name, String password) {
-        UserExample example = new UserExample();
-        example.createCriteria().andNameEqualTo(name).andPasswordEqualTo(password);
-        List<User> users = userMapper.selectByExample(example);
-        if (users.isEmpty())
+        //用户名登录
+        UserExample example1 = new UserExample();
+        example1.createCriteria().andNameEqualTo(name).andPasswordEqualTo(password);
+        List<User> users1 = userMapper.selectByExample(example1);
+
+        //手机号码登录
+        UserExample example2 = new UserExample();
+        example1.createCriteria().andTelephoneEqualTo(name).andPasswordEqualTo(password);
+        List<User> users2 = userMapper.selectByExample(example2);
+        if (users1.isEmpty() && users2.isEmpty())
+            //不论输入的是用户名还是手机号，用户都不存在
             return null;
-        return users.get(0);
+        else if (users1.isEmpty())
+            //用户本来存在，但输入的是 手机号
+            return users2.get(0);
+        else
+            //用户本来存在，但输入的是 用户名
+            return users1.get(0);
     }
 }

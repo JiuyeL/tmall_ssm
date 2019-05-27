@@ -100,8 +100,15 @@ public class ForeController {
         //保证验证码只能使用一次
         session.removeAttribute("CHECKCODE_SERVER");
         //2 判断验证码是否正确
+        boolean exist = userService.isExist(name);
         if (!checkCode.equalsIgnoreCase(checkcode_server)) {
             String msg = "验证码错误";
+            model.addAttribute("msg", msg);
+            model.addAttribute("user", null);
+            return "fore/register";
+        }
+        if (exist){
+            String msg = "此用户名已经名花有主了，换一个吧";
             model.addAttribute("msg", msg);
             model.addAttribute("user", null);
             return "fore/register";

@@ -105,6 +105,7 @@
         img.src = "checkCode?" + new Date().getTime();
     }
 
+
     $(function () {
 
         <c:if test="${!empty msg}">
@@ -112,16 +113,16 @@
         $("div.registerErrorMessageDiv").css("visibility", "visible");
         </c:if>
 
+        var  nameused = false;
         //当表单提交时校验所有的方法
         $("#btn_submit").click(function () {
             $("#registerForm").submit(function () {
                 //如果这个匿名函数没有返回值或者返回值为true，则提交表单；否则，不提交表单.
-                if (checkUsername() && checkPassword() && checkEmail() && checkName() && checkTel() && checkBirthday() && checkCode()) {
+                if (checkUsername() && checkPassword() && checkEmail() && checkName()  && checkTel() &&checkBirthday() && checkCode()) {
                     //ajax提交数据
-                    $.post("foreregister", $(this).serialize(), function (data) {
-                        //处理服务器返回的数据
-
-                    })
+                        $.post("foreregister", $(this).serialize(), function (data) {
+                            //处理服务器返回的数据
+                        });
                 }
                 return false;
             });
@@ -132,11 +133,12 @@
                 "forecheckName",
                 {name: name},
                 function (result) {
-                   alert("123456789"+result)
                     if (result == "fail") {
-                        $("span.errorMessage").html("换一个吧，此用户名已经被使用");
+                        $("span.errorMessage").html("此用户名已经名花有主了，换一个吧");
                         $("div.registerErrorMessageDiv").css("visibility", "visible");
-                    }
+                        nameused = true;
+                    }else
+                        nameused = false;
                 }
             );
         });

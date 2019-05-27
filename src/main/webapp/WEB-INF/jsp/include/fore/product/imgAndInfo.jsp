@@ -1,10 +1,9 @@
-<!-- 模仿天猫整站ssm 教程 为how2j.cn 版权所有-->
-<!-- 本教程仅用于学习使用，切勿用于非法用途，由此引起一切后果与本站无关-->
-<!-- 供购买者学习，请勿私自传播，否则自行承担相关法律责任-->
+
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script>
 
@@ -235,9 +234,29 @@
         <div class="buyDiv">
             <a class="buyLink" href="forebuyone?pid=${p.id}">
                 <button class="buyButton">立即购买</button>
+               <c:if test="${p.stock == 0}" >
+                   <script>
+                       alert("库存没有了，亲");
+                       $(".buyButton").html("立即购买");
+                       $(".buyButton").attr("disabled", "disabled");
+                       $(".buyButton").css("background-color", "lightgray");
+                       $(".buyButton").css("border-color", "lightgray");
+                       $(".buyButton").css("color", "black");
+                   </script>
+               </c:if>
             </a>
             <a href="#nowhere" class="addCartLink">
                 <button class="addCartButton"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</button>
+                <c:if test="${p.stock == 0}" >
+                    <script>
+                        $(".addCartButton").html("加入购物车");
+                        $(".addCartButton").attr("disabled", "disabled");
+                        $(".addCartButton").css("background-color", "lightgray");
+                        $(".addCartButton").css("border-color", "lightgray");
+                        $(".addCartButton").css("color", "black");
+                    </script>
+                </c:if>
+
             </a>
         </div>
     </div>
